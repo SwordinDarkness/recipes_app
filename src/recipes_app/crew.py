@@ -1,12 +1,25 @@
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
+from composio_crewai import ComposioToolSet, Action, App
+from dotenv import load_dotenv
+import os
 
-# If you want to run a snippet of code before or after the crew starts, 
+from langchain_openai import ChatOpenAI
+from mem0.llms.gemini import GeminiLLM
+
+
+# If you want to run a snippet of code before or after the crew starts,
 # you can use the @before_kickoff and @after_kickoff decorators
 # https://docs.crewai.com/concepts/crews#example-crew-class-with-decorators
 
 @CrewBase
 class RecipesApp():
+
+	load_dotenv()
+
+	composio_toolset = ComposioToolSet(api_key=os.getenv('COMPOSIO_API_KEY'))
+	tools = composio_toolset.get_tools(actions=['GOOGLEDRIVE_CREATE_FOLDER'])
+
 	"""RecipesApp crew"""
 
 	# Learn more about YAML configuration files here:
@@ -18,33 +31,22 @@ class RecipesApp():
 	# If you would like to add tools to your agents, you can learn more about it here:
 	# https://docs.crewai.com/concepts/agents#agent-tools
 	@agent
-	def researcher(self) -> Agent:
+	def composio_agent(self) -> Agent:
 		return Agent(
-			config=self.agents_config['researcher'],
-			verbose=True
+			config=self.agents_config['composio_agent'],
+			verbose=True,
+			tools=self.tools,
 		)
 
-	@agent
-	def reporting_analyst(self) -> Agent:
-		return Agent(
-			config=self.agents_config['reporting_analyst'],
-			verbose=True
-		)
+
 
 	# To learn more about structured task outputs, 
 	# task dependencies, and task callbacks, check out the documentation:
 	# https://docs.crewai.com/concepts/tasks#overview-of-a-task
 	@task
-	def research_task(self) -> Task:
+	def composio_task(self) -> Task:
 		return Task(
-			config=self.tasks_config['research_task'],
-		)
-
-	@task
-	def reporting_task(self) -> Task:
-		return Task(
-			config=self.tasks_config['reporting_task'],
-			output_file='report.md'
+			config=self.tasks_config['composio_task'],
 		)
 
 	@crew
