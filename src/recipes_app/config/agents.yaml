@@ -10,7 +10,7 @@ file_writer_agent:
     role: >
         File Writer
     goal: >
-       Create a file called {file_name} and write the recipe to the file in the current directory
+       Create a file in the current directory called {file_name} and write the recipe to the file
     backstory: >
         You're a file writer that creates and writes to a file.
     output_file: >

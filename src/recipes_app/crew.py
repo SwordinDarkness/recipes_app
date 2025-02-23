@@ -1,3 +1,4 @@
+from composio import WorkspaceType
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 from composio_crewai import ComposioToolSet, Action, App
@@ -17,7 +18,7 @@ class RecipesApp():
 
 	load_dotenv()
 
-	composio_toolset = ComposioToolSet(api_key=os.getenv('COMPOSIO_API_KEY'))
+	composio_toolset = ComposioToolSet(workspace_config=WorkspaceType.Host(), api_key=os.getenv('COMPOSIO_API_KEY'))
 	file_tools = composio_toolset.get_tools(actions=[Action.FILETOOL_CREATE_FILE,Action.FILETOOL_WRITE])
 	google_drive_tools = composio_toolset.get_tools(actions=[Action.GOOGLEDRIVE_CREATE_FOLDER, Action.GOOGLEDRIVE_FIND_FOLDER, Action.GOOGLEDRIVE_UPLOAD_FILE])
 

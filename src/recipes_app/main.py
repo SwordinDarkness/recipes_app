@@ -17,9 +17,11 @@ def run():
     """
     Run the crew.
     """
-    file_name = "meals-recipe.md"
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     folder = "recipes"
     meal = input("What meal do you want to eat?  ").strip()
+    no_whitespace = meal.replace(" ", "-")
+    file_name = f"{no_whitespace}-recipe-{timestamp }.md"
 
     inputs = {
         "file_name": file_name,

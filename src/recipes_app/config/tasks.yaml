@@ -6,7 +6,7 @@ chef_task:
     agent: chef_agent
 file_writer_task:
     description: >
-        Create and write the recipe to a file
+        Create a file in the current directory and write the recipe to the file
     expected_output: >
         A file containing the recipe has been created in the current directory
     agent: file_writer_agent
