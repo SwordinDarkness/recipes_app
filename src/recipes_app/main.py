@@ -17,8 +17,14 @@ def run():
     """
     Run the crew.
     """
+    file_name = "meals-recipe.md"
+    folder = "recipes"
+    meal = input("What meal do you want to eat?  ").strip()
+
     inputs = {
-        'user_input': 'Create a folder called "Recipes" in my Google Drive',
+        "file_name": file_name,
+        "folder": folder,
+        "meal": meal
     }
     
     try:

@@ -18,7 +18,8 @@ class RecipesApp():
 	load_dotenv()
 
 	composio_toolset = ComposioToolSet(api_key=os.getenv('COMPOSIO_API_KEY'))
-	tools = composio_toolset.get_tools(actions=['GOOGLEDRIVE_CREATE_FOLDER'])
+	file_tools = composio_toolset.get_tools(actions=[Action.FILETOOL_CREATE_FILE,Action.FILETOOL_WRITE])
+	google_drive_tools = composio_toolset.get_tools(actions=[Action.GOOGLEDRIVE_CREATE_FOLDER, Action.GOOGLEDRIVE_FIND_FOLDER, Action.GOOGLEDRIVE_UPLOAD_FILE])
 
 	"""RecipesApp crew"""
 
@@ -31,11 +32,25 @@ class RecipesApp():
 	# If you would like to add tools to your agents, you can learn more about it here:
 	# https://docs.crewai.com/concepts/agents#agent-tools
 	@agent
-	def composio_agent(self) -> Agent:
+	def chef_agent(self) -> Agent:
 		return Agent(
-			config=self.agents_config['composio_agent'],
+			config=self.agents_config['chef_agent'],
 			verbose=True,
-			tools=self.tools,
+		)
+	@agent
+	def file_writer_agent(self) -> Agent:
+		return Agent(
+			config=self.agents_config['file_writer_agent'],
+			verbose=True,
+			tools=self.file_tools,
+		)
+
+	@agent
+	def google_drive_agent(self) -> Agent:
+		return Agent(
+			config=self.agents_config['google_drive_agent'],
+			verbose=True,
+			tools=self.google_drive_tools,
 		)
 
 
@@ -44,9 +59,20 @@ class RecipesApp():
 	# task dependencies, and task callbacks, check out the documentation:
 	# https://docs.crewai.com/concepts/tasks#overview-of-a-task
 	@task
-	def composio_task(self) -> Task:
+	def chef_task(self) -> Task:
 		return Task(
-			config=self.tasks_config['composio_task'],
+			config=self.tasks_config['chef_task'],
+		)
+
+	@task
+	def file_writer_task(self) -> Task:
+		return Task(
+			config=self.tasks_config['file_writer_task'],
+		)
+	@task
+	def google_drive_task(self) -> Task:
+		return Task(
+			config=self.tasks_config['google_drive_task'],
 		)
 
 	@crew

@@ -1,8 +1,19 @@
-composio_task:
-  description: >
-    Understand the user's needs and assist them with their needs: {user_input}
-  expected_output: >
-   Summary of the user's needs and how you will assist them.
-  agent: composio_agent
-
+chef_task:
+    description: >
+        Prepare a delicious meal based on the user's input {meal}
+    expected_output: >
+        A recipe for the meal has been created
+    agent: chef_agent
+file_writer_task:
+    description: >
+        Create and write the recipe to a file
+    expected_output: >
+        A file containing the recipe has been created in the current directory
+    agent: file_writer_agent
+google_drive_task:
+    description: >
+        Find the folder called {folder} and upload the {file_name} to Google Drive
+    expected_output: >
+        A {file_name} containing the recipe is uploaded to Google Drive folder called {folder} successfully
+    agent: google_drive_agent
 
